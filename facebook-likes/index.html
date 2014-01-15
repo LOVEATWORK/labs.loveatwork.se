@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+
+<link rel="stylesheet" href="../labs-theme/labs-style.css" />
+
+<style>
+ 
+body {
+  background: #3e3e3e;
+}
+
+h2 {
+  font-weight: 300;
+  font-size: 100px;
+  width: 300px;
+  height: 100px;
+  float: left;
+  color: #FFF;
+}
+
+small {
+  font-size: 50%;
+}
+
+small,strong {
+  display: block;
+}
+
+#container {
+  text-align: center;
+}
+
+img.logo {
+  display: block;
+  clear: both;
+  margin: 0 auto;
+}
+
+</style>
+
+<body>
+
+<h1 class="labs-title">Experiment: Get Facebook page information</h1>
+
+<div id="container"></div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://www.loveatwork.se/wp-content/themes/LOVEATWORK/js/libs/jquery-1.7.1.min.js"><\/script>')</script>
+
+<script>
+
+
+$.get("https://graph.facebook.com/iloveatwork/picture?redirect=false", function(json) {
+  
+  var link = $("<a/>").attr("href", "https://www.facebook.com/iloveatwork")
+  
+  $("<img />").addClass("logo").attr("src", json.data.url).appendTo(link);
+
+  link.appendTo("#container");
+
+  $.get("https://graph.facebook.com/iloveatwork", function(json) {
+
+    $("<h2>").html("<small>Likes</small><strong>" + json.likes + "</strong>").appendTo("#container");
+    $("<h2>").html("<small>Check-ins</small><strong>" + json.checkins + "</strong>").appendTo("#container");
+    $("<h2>").html("<small>Buzz</small><strong>" + json.talking_about_count + "</strong>").appendTo("#container");
+    $("<h2>").html("<small>Was here</small><strong>" + json.were_here_count + "</strong>").appendTo("#container");
+
+  console.log(json);
+
+  });
+
+
+});
+
+</script>
+
+
+</body>
+<html>

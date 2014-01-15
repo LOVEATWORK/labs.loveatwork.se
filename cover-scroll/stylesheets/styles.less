@@ -1,0 +1,43 @@
+@import "functions.less";
+@import "base.less";
+@import "layout.less";
+@import "skeleton.less";
+
+.fullpage {
+	position: absolute;
+	height: 3000px;
+	z-index: 999;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	overflow: hidden;
+
+	.transition(height 0.2s ease-out);
+}
+
+.cover {
+	position: absolute;
+	height: 3000px;
+	z-index: 999;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background: #296797;
+	.transition(top 0.2s ease-out);
+}
+
+.container {
+	margin: 0 auto;
+}
+
+.content {
+	height: 5000px;
+	margin-top: 40px;
+	width: 800px;
+}
+
+.stick {
+	position: fixed;
+}

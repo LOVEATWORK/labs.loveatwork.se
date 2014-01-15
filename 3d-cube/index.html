@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+
+<link rel="stylesheet" href="../labs-theme/labs-style.css" />
+
+<style>
+ 
+body {
+  background: #3e3e3e;
+}
+
+h2 {
+  font-weight: 300;
+  font-size: 100px;
+  width: 300px;
+  height: 100px;
+  float: left;
+  color: #FFF;
+}
+
+small {
+  font-size: 50%;
+}
+
+small,strong {
+  display: block;
+}
+
+#container {
+  text-align: center;
+}
+
+img.logo {
+  display: block;
+  clear: both;
+  margin: 0 auto;
+}
+
+</style>
+
+<body>
+
+<h1 class="labs-title">Experiment: THREE.js</h1>
+
+<div id="container"></div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="script/three.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://www.loveatwork.se/wp-content/themes/LOVEATWORK/js/libs/jquery-1.7.1.min.js"><\/script>')</script>
+
+<script>
+
+var scene, camera, renderer;
+
+var WIDTH = window.innerWidth;
+var HEIGHT = window.innerHeight
+
+var SPEED = 0.01;
+
+var targetRotation = 0;
+var targetRotationOnMouseDown = 0;
+
+var mouseX = 0;
+
+var mouseXOnMouseDown = 0;
+
+var windowHalfX = window.innerWidth / 2;
+var windowHalfY = window.innerHeight / 2;
+
+
+function init() {
+
+  scene = new THREE.Scene();
+  initCamera();
+  initRenderer();
+  initCube();
+
+
+        document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+
+
+  document.body.appendChild(renderer.domElement);
+
+}
+
+function initCamera() {
+  camera = new THREE.PerspectiveCamera(70, WIDTH / HEIGHT, 1, 10);
+  camera.position.set(0, 3.5, 5);
+  camera.lookAt(scene.position);
+}
+
+function initRenderer() {
+  renderer = new THREE.WebGLRenderer({antialias:true});
+  renderer.setSize(WIDTH, HEIGHT);
+}
+
+function initCube() {
+  cube = new THREE.Mesh(new THREE.CubeGeometry(2,2,2), new THREE.MeshNormalMaterial());
+  scene.add(cube);
+}
+
+function rotateCube(x, y) {
+  cube.rotation.x -= x / 100;
+  cube.rotation.y -= y / 100;
+  //cube.rotation.z -= SPEED * 3;
+}
+
+function onDocumentMouseDown( event ) {
+
+        event.preventDefault();
+
+        document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+        document.addEventListener( 'mouseup', onDocumentMouseUp, false );
+
+        mouseXOnMouseDown = event.clientX - windowHalfX;
+        targetRotationOnMouseDown = targetRotation;
+
+      }
+
+      function onDocumentMouseMove( event ) {
+
+        mouseX = event.clientX - windowHalfX;
+
+        targetRotation = targetRotationOnMouseDown + ( mouseX - mouseXOnMouseDown ) * 0.02;
+
+      }
+
+      function onDocumentMouseUp( event ) {
+
+        document.removeEventListener( 'mousemove', onDocumentMouseMove, false );
+        document.removeEventListener( 'mouseup', onDocumentMouseUp, false );
+
+      }
+
+function render() {
+  
+  requestAnimationFrame(render);
+
+  cube.rotation.y += ( targetRotation - cube.rotation.y ) * 0.05;
+  // rotateCube();
+  renderer.render(scene, camera);
+
+}
+
+init();
+render();
+
+</script>
+
+
+</body>
+<html>

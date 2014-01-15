@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+
+<link rel="stylesheet" href="../labs-theme/labs-style.css" />
+
+<style>
+
+body {
+  background: #3e3e3e;
+}
+
+#mood-container img {
+  margin: 0 auto;
+  display: block;
+}
+
+#mood-container h2 {
+  text-align: center;
+  font-size: 30px;
+  font-weight: 300;
+  color: #ffee08;
+}
+
+</style>
+
+<body>
+
+<h1 class="labs-title">Experiment: Show current mood</h1>
+
+<div id="mood-container"></div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://www.loveatwork.se/wp-content/themes/LOVEATWORK/js/libs/jquery-1.7.1.min.js"><\/script>')</script>
+
+<script>
+
+  $(document).ready(function() {
+
+    var allmoods = [];
+    
+    var Mood = function() {
+      return {
+        text: "",
+        date: "",
+        image: ""
+      }
+    };
+
+    $.get("https://dl.dropboxusercontent.com/u/114477/Jawbone/jawbone_mood.txt", function(data) {
+
+        var items = data.split("\n");
+        
+        $.each(items, function(i, item) {
+            
+            var obj = item.split("|");
+            var m = new Mood();
+
+            m.text = obj[0];
+            m.date = obj[1];
+            m.image = obj[2];
+
+            allmoods.push(m);
+
+        });
+
+        var last = allmoods[allmoods.length - 1];
+        var img = $("<img />")
+                    .attr("src", last.image);
+
+        var status = $("<h2>").text(last.text);
+
+        $("#mood-container")
+          .append(img)
+          .append(status);
+
+    });
+
+  });
+
+</script>
+
+
+</body>
+<html>

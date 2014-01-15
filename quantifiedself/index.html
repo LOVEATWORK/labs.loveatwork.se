@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+
+<link rel="stylesheet" href="../labs-theme/labs-style.css" />
+
+<style>
+
+body {
+  background: #ecf0f1;
+}
+
+#container {
+  padding: 20px 25px;
+}
+
+.statbox {
+  background: #FFF;
+  width: 300px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.statbox header {
+  background-color: #34495e;
+  padding: 10px;
+  -webkit-border-top-left-radius: 5px;
+  -webkit-border-top-right-radius: 5px;
+  -moz-border-radius-topleft: 5px;
+  -moz-border-radius-topright: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.statbox header h2 {
+  font-weight: 600;
+  color: #FFF;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+}
+
+.statbox .content {
+} 
+
+.chart div {
+  font-size: 10px;
+  background-color: #e67e22;
+  text-align: right;
+  padding: 3px;
+  margin: 1px 0 0 0;
+  color: white;
+}
+
+</style>
+
+<body>
+
+<h1 class="labs-title">Experiment: Quantified self dashboard <span>Ett försök att visualisera allt som händer via sensorer och appar</span></h1>
+
+<div id="container">
+  
+<div class="statbox" id="appstats">
+  
+  <header>
+    <h2>Application use</h2>
+  </header>
+
+    <div class="content"></div>
+  
+  <footer>
+  </footer>
+
+</div>
+
+
+</div>
+
+<script src="http://d3js.org/d3.v3.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://www.loveatwork.se/wp-content/themes/LOVEATWORK/js/libs/jquery-1.7.1.min.js"><\/script>')</script>
+
+<script>
+
+var TimeSink = function() {
+  return {
+    pool:null,
+    application:null,
+    win:null,
+    begin:null,
+    end:null
+  };
+}
+
+var getUniqueItemsFromArray = function(arr) {
+
+  var unique_values = {};
+  var list_of_values = [];
+  var value_count = {};
+
+  
+  $(arr).each(function(i, item) {
+
+      if ( ! unique_values[item.application] ) {
+            unique_values[item.application] = true;
+            list_of_values.push(item.application);
+      } else {
+          // We have duplicate values!
+
+          if (value_count[item.application] == undefined) {
+            value_count[item.application] = 1;            
+          } else {
+            value_count[item.application] = value_count[item.application] + 1;
+            // console.log(value_count[item.application]);  
+          }
+
+          // console.log(unique_values);
+      }
+
+  });
+
+  return {
+    instances: value_count,
+    unique: list_of_values
+  };
+
+};
+
+var itemarray = new Array();
+
+$.get("timesink-report.csv", function(obj) {
+
+  var rows = obj.split(/\n/);
+  $(rows).each(function(i, item) {
+
+    var row = item.split(/\t/);
+
+    var ts = new TimeSink();
+    ts.pool = row[0];
+    ts.application = row[1];
+    ts.win = row[2];
+    ts.begin = row[3];
+    ts.end = row[4];
+
+    itemarray.push(ts);
+
+  });
+
+  itemarray.splice(0, 1)
+  var uniqueitems = getUniqueItemsFromArray(itemarray);
+  var data_array = [];
+
+  $(uniqueitems.unique).each(function(i, item) {
+
+    if (item != "" && item != undefined) {     
+      data_array.push({
+        app_name: item,
+        app_uses: uniqueitems.instances[item]
+      });
+    }
+
+  });
+
+  OutputBarChart(data_array);
+
+});
+
+function OutputBarChart(data) {
+
+  var chart = d3.select("#appstats div.content").append("div")
+    .attr("class", "chart")
+
+    var x = d3.scale.linear()
+              .domain([0, d3.max(data, function(d) { return d.app_uses; })])
+              .range(["40px", "294px"]);
+
+    chart.selectAll("div")
+        .data(data)
+      .enter().append("div")
+        .style("width", function(d) { return x(d.app_uses) }) 
+        .html(function(d) { return d.app_name; })
+
+};
+
+</script>
+
+
+</body>
+<html>

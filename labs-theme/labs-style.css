@@ -1,0 +1,40 @@
+/* 
+* BASE STYLESHEET FOR LOVEATWORK / LABS 
+* @version 1.1
+*/
+
+@import url('http://fonts.googleapis.com/css?family=Open+Sans:300,600');
+
+body {
+  font-size: 10px;
+  font-family: 'Open Sans', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+a { 
+  text-decoration: none;
+  color: #2980b9;
+}
+
+a:hover {
+  color: #3498db;
+}
+
+h1.labs-title {
+  text-align: center;
+  background-image: url('images/loveatwork-labs.png');
+  background-repeat: no-repeat;
+  background-position: center 20px;
+  padding: 70px 0 30px 0;
+  margin: 0 0 0 0;
+  font-weight: 300;
+  border-bottom: 1px dotted #ccc;
+  background-color: #FFF;
+}
+
+h1.labs-title span {
+  display: block;
+  font-size: 60%;
+  color: #999;
+}

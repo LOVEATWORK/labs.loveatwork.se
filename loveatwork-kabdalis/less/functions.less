@@ -1,0 +1,41 @@
+// Functions
+
+.content-dimensions(@width: 60%) {
+	width: @width;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.border-radius(@radius: 5px) {
+	-webkit-border-radius: @radius;
+	-moz-border-radius: @radius;
+	-ms-border-radius: @radius;
+	-o-border-radius: @radius;
+	border-radius: @radius;
+}
+
+.opacity(@opacity: 0.5) {
+	opacity: @opacity;
+	-webkit-opacity: @opacity;
+	-moz-opacity: @opacity;
+}
+
+.desaturate() {
+	-webkit-filter: grayscale(1); -webkit-filter: grayscale(100%); -moz-filter: grayscale(100%);
+	filter: gray; filter: grayscale(100%);
+	filter: url(../images/desaturate.svg#greyscale);
+}
+
+.transition(@transition) {
+	-webkit-transition: @transition;
+    -moz-transition: @transition;
+    transition: @transition;
+}
+
+.filter-blur(@strength) {
+	-webkit-filter: blur(@strength); 
+	-moz-filter: blur(@strength); 
+	-o-filter: blur(@strength); 
+	-ms-filter: blur(@strength); 
+	filter: blur(@strength);
+}
